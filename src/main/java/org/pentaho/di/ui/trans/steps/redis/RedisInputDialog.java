@@ -20,7 +20,7 @@
  *
  ******************************************************************************/
 
-package org.pentaho.di.ui.trans.steps.memcached;
+package org.pentaho.di.ui.trans.steps.redis;
 
 import java.net.InetSocketAddress;
 import java.util.Set;
@@ -55,17 +55,17 @@ import org.pentaho.di.i18n.BaseMessages;
 import org.pentaho.di.trans.TransMeta;
 import org.pentaho.di.trans.step.BaseStepMeta;
 import org.pentaho.di.trans.step.StepDialogInterface;
-import org.pentaho.di.trans.steps.memcached.MemcachedInputMeta;
+import org.pentaho.di.trans.steps.redis.RedisInputMeta;
 import org.pentaho.di.ui.core.dialog.ErrorDialog;
 import org.pentaho.di.ui.core.widget.ColumnInfo;
 import org.pentaho.di.ui.core.widget.TableView;
 import org.pentaho.di.ui.core.widget.TextVar;
 import org.pentaho.di.ui.trans.step.BaseStepDialog;
 
-public class MemcachedInputDialog extends BaseStepDialog implements StepDialogInterface {
-  private static Class<?> PKG = MemcachedInputMeta.class; // for i18n purposes, needed by Translator2!! $NON-NLS-1$
+public class RedisInputDialog extends BaseStepDialog implements StepDialogInterface {
+  private static Class<?> PKG = RedisInputMeta.class; // for i18n purposes, needed by Translator2!! $NON-NLS-1$
 
-  private MemcachedInputMeta input;
+  private RedisInputMeta input;
   private boolean gotPreviousFields = false;
   private RowMetaInterface previousFields;
 
@@ -86,9 +86,9 @@ public class MemcachedInputDialog extends BaseStepDialog implements StepDialogIn
   private TableView wServers;
   private FormData fdlServers, fdServers;
 
-  public MemcachedInputDialog( Shell parent, Object in, TransMeta tr, String sname ) {
+  public RedisInputDialog( Shell parent, Object in, TransMeta tr, String sname ) {
     super( parent, (BaseStepMeta) in, tr, sname );
-    input = (MemcachedInputMeta) in;
+    input = (RedisInputMeta) in;
   }
 
   public String open() {
@@ -111,14 +111,14 @@ public class MemcachedInputDialog extends BaseStepDialog implements StepDialogIn
     formLayout.marginHeight = Const.FORM_MARGIN;
 
     shell.setLayout( formLayout );
-    shell.setText( BaseMessages.getString( PKG, "MemcachedInputDialog.Shell.Title" ) );
+    shell.setText( BaseMessages.getString( PKG, "RedisInputDialog.Shell.Title" ) );
 
     int middle = props.getMiddlePct();
     int margin = Const.MARGIN;
 
     // Stepname line
     wlStepname = new Label( shell, SWT.RIGHT );
-    wlStepname.setText( BaseMessages.getString( PKG, "MemcachedInputDialog.Stepname.Label" ) );
+    wlStepname.setText( BaseMessages.getString( PKG, "RedisInputDialog.Stepname.Label" ) );
     props.setLook( wlStepname );
     fdlStepname = new FormData();
     fdlStepname.left = new FormAttachment( 0, 0 );
@@ -137,7 +137,7 @@ public class MemcachedInputDialog extends BaseStepDialog implements StepDialogIn
 
     // Key field
     wlKeyField = new Label( shell, SWT.RIGHT );
-    wlKeyField.setText( BaseMessages.getString( PKG, "MemcachedInputDialog.KeyField.Label" ) );
+    wlKeyField.setText( BaseMessages.getString( PKG, "RedisInputDialog.KeyField.Label" ) );
     props.setLook( wlKeyField );
     fdlKeyField = new FormData();
     fdlKeyField.left = new FormAttachment( 0, 0 );
@@ -167,7 +167,7 @@ public class MemcachedInputDialog extends BaseStepDialog implements StepDialogIn
 
     // Value field
     wlValueField = new Label( shell, SWT.RIGHT );
-    wlValueField.setText( BaseMessages.getString( PKG, "MemcachedInputDialog.ValueField.Label" ) );
+    wlValueField.setText( BaseMessages.getString( PKG, "RedisInputDialog.ValueField.Label" ) );
     props.setLook( wlValueField );
     fdlValueField = new FormData();
     fdlValueField.left = new FormAttachment( 0, 0 );
@@ -185,7 +185,7 @@ public class MemcachedInputDialog extends BaseStepDialog implements StepDialogIn
 
     // Type field
     wlTypeField = new Label( shell, SWT.RIGHT );
-    wlTypeField.setText( BaseMessages.getString( PKG, "MemcachedInputDialog.TypeField.Label" ) );
+    wlTypeField.setText( BaseMessages.getString( PKG, "RedisInputDialog.TypeField.Label" ) );
     props.setLook( wlTypeField );
     fdlTypeField = new FormData();
     fdlTypeField.left = new FormAttachment( 0, 0 );
@@ -204,9 +204,9 @@ public class MemcachedInputDialog extends BaseStepDialog implements StepDialogIn
 
     ColumnInfo[] colinf =
         new ColumnInfo[] {
-          new ColumnInfo( BaseMessages.getString( PKG, "MemcachedInputDialog.HostName.Column" ),
+          new ColumnInfo( BaseMessages.getString( PKG, "RedisInputDialog.HostName.Column" ),
               ColumnInfo.COLUMN_TYPE_TEXT, false ),
-          new ColumnInfo( BaseMessages.getString( PKG, "MemcachedInputDialog.Port.Column" ),
+          new ColumnInfo( BaseMessages.getString( PKG, "RedisInputDialog.Port.Column" ),
               ColumnInfo.COLUMN_TYPE_TEXT, false ), };
 
     // Servers
@@ -219,7 +219,7 @@ public class MemcachedInputDialog extends BaseStepDialog implements StepDialogIn
     wServersComp.setLayout( fileLayout );
 
     wlServers = new Label( shell, SWT.RIGHT );
-    wlServers.setText( BaseMessages.getString( PKG, "MemcachedInputDialog.Servers.Label" ) );
+    wlServers.setText( BaseMessages.getString( PKG, "RedisInputDialog.Servers.Label" ) );
     props.setLook( wlServers );
     fdlServers = new FormData();
     fdlServers.left = new FormAttachment( 0, 0 );
@@ -371,8 +371,8 @@ public class MemcachedInputDialog extends BaseStepDialog implements StepDialogIn
       gotPreviousFields = true;
 
     } catch ( KettleException ke ) {
-      new ErrorDialog( shell, BaseMessages.getString( PKG, "MemcachedInputDialog.FailedToGetFields.DialogTitle" ),
-          BaseMessages.getString( PKG, "MemcachedInputDialog.FailedToGetFields.DialogMessage" ), ke );
+      new ErrorDialog( shell, BaseMessages.getString( PKG, "RedisInputDialog.FailedToGetFields.DialogTitle" ),
+          BaseMessages.getString( PKG, "RedisInputDialog.FailedToGetFields.DialogMessage" ), ke );
     }
   }
 }

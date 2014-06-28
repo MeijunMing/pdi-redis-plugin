@@ -20,7 +20,7 @@
  *
  ******************************************************************************/
 
-package org.pentaho.di.ui.trans.steps.memcached;
+package org.pentaho.di.ui.trans.steps.redis;
 
 import java.net.InetSocketAddress;
 import java.util.Set;
@@ -54,17 +54,17 @@ import org.pentaho.di.i18n.BaseMessages;
 import org.pentaho.di.trans.TransMeta;
 import org.pentaho.di.trans.step.BaseStepMeta;
 import org.pentaho.di.trans.step.StepDialogInterface;
-import org.pentaho.di.trans.steps.memcached.MemcachedOutputMeta;
+import org.pentaho.di.trans.steps.redis.RedisOutputMeta;
 import org.pentaho.di.ui.core.dialog.ErrorDialog;
 import org.pentaho.di.ui.core.widget.ColumnInfo;
 import org.pentaho.di.ui.core.widget.TableView;
 import org.pentaho.di.ui.core.widget.TextVar;
 import org.pentaho.di.ui.trans.step.BaseStepDialog;
 
-public class MemcachedOutputDialog extends BaseStepDialog implements StepDialogInterface {
-  private static Class<?> PKG = MemcachedOutputMeta.class; // for i18n purposes, needed by Translator2!! $NON-NLS-1$
+public class RedisOutputDialog extends BaseStepDialog implements StepDialogInterface {
+  private static Class<?> PKG = RedisOutputMeta.class; // for i18n purposes, needed by Translator2!! $NON-NLS-1$
 
-  private MemcachedOutputMeta input;
+  private RedisOutputMeta input;
   private boolean gotPreviousFields = false;
   private RowMetaInterface previousFields;
 
@@ -85,9 +85,9 @@ public class MemcachedOutputDialog extends BaseStepDialog implements StepDialogI
   private TableView wServers;
   private FormData fdlServers, fdServers;
 
-  public MemcachedOutputDialog( Shell parent, Object in, TransMeta tr, String sname ) {
+  public RedisOutputDialog( Shell parent, Object in, TransMeta tr, String sname ) {
     super( parent, (BaseStepMeta) in, tr, sname );
-    input = (MemcachedOutputMeta) in;
+    input = (RedisOutputMeta) in;
   }
 
   public String open() {
@@ -110,14 +110,14 @@ public class MemcachedOutputDialog extends BaseStepDialog implements StepDialogI
     formLayout.marginHeight = Const.FORM_MARGIN;
 
     shell.setLayout( formLayout );
-    shell.setText( BaseMessages.getString( PKG, "MemcachedOutputDialog.Shell.Title" ) );
+    shell.setText( BaseMessages.getString( PKG, "RedisOutputDialog.Shell.Title" ) );
 
     int middle = props.getMiddlePct();
     int margin = Const.MARGIN;
 
     // Stepname line
     wlStepname = new Label( shell, SWT.RIGHT );
-    wlStepname.setText( BaseMessages.getString( PKG, "MemcachedOutputDialog.Stepname.Label" ) );
+    wlStepname.setText( BaseMessages.getString( PKG, "RedisOutputDialog.Stepname.Label" ) );
     props.setLook( wlStepname );
     fdlStepname = new FormData();
     fdlStepname.left = new FormAttachment( 0, 0 );
@@ -136,7 +136,7 @@ public class MemcachedOutputDialog extends BaseStepDialog implements StepDialogI
 
     // Key field
     wlKeyField = new Label( shell, SWT.RIGHT );
-    wlKeyField.setText( BaseMessages.getString( PKG, "MemcachedOutputDialog.KeyField.Label" ) );
+    wlKeyField.setText( BaseMessages.getString( PKG, "RedisOutputDialog.KeyField.Label" ) );
     props.setLook( wlKeyField );
     fdlKeyField = new FormData();
     fdlKeyField.left = new FormAttachment( 0, 0 );
@@ -166,7 +166,7 @@ public class MemcachedOutputDialog extends BaseStepDialog implements StepDialogI
 
     // Value field
     wlValueField = new Label( shell, SWT.RIGHT );
-    wlValueField.setText( BaseMessages.getString( PKG, "MemcachedOutputDialog.ValueField.Label" ) );
+    wlValueField.setText( BaseMessages.getString( PKG, "RedisOutputDialog.ValueField.Label" ) );
     props.setLook( wlValueField );
     fdlValueField = new FormData();
     fdlValueField.left = new FormAttachment( 0, 0 );
@@ -196,7 +196,7 @@ public class MemcachedOutputDialog extends BaseStepDialog implements StepDialogI
 
     // Type field
     wlExpirationTime = new Label( shell, SWT.RIGHT );
-    wlExpirationTime.setText( BaseMessages.getString( PKG, "MemcachedOutputDialog.ExpirationTime.Label" ) );
+    wlExpirationTime.setText( BaseMessages.getString( PKG, "RedisOutputDialog.ExpirationTime.Label" ) );
     props.setLook( wlExpirationTime );
     fdlExpirationTime = new FormData();
     fdlExpirationTime.left = new FormAttachment( 0, 0 );
@@ -214,9 +214,9 @@ public class MemcachedOutputDialog extends BaseStepDialog implements StepDialogI
 
     ColumnInfo[] colinf =
         new ColumnInfo[] {
-          new ColumnInfo( BaseMessages.getString( PKG, "MemcachedOutputDialog.HostName.Column" ),
+          new ColumnInfo( BaseMessages.getString( PKG, "RedisOutputDialog.HostName.Column" ),
               ColumnInfo.COLUMN_TYPE_TEXT, false ),
-          new ColumnInfo( BaseMessages.getString( PKG, "MemcachedOutputDialog.Port.Column" ),
+          new ColumnInfo( BaseMessages.getString( PKG, "RedisOutputDialog.Port.Column" ),
               ColumnInfo.COLUMN_TYPE_TEXT, false ), };
 
     // Servers
@@ -229,7 +229,7 @@ public class MemcachedOutputDialog extends BaseStepDialog implements StepDialogI
     wServersComp.setLayout( fileLayout );
 
     wlServers = new Label( shell, SWT.RIGHT );
-    wlServers.setText( BaseMessages.getString( PKG, "MemcachedOutputDialog.Servers.Label" ) );
+    wlServers.setText( BaseMessages.getString( PKG, "RedisOutputDialog.Servers.Label" ) );
     props.setLook( wlServers );
     fdlServers = new FormData();
     fdlServers.left = new FormAttachment( 0, 0 );
@@ -379,8 +379,8 @@ public class MemcachedOutputDialog extends BaseStepDialog implements StepDialogI
       gotPreviousFields = true;
 
     } catch ( KettleException ke ) {
-      new ErrorDialog( shell, BaseMessages.getString( PKG, "MemcachedOutputDialog.FailedToGetFields.DialogTitle" ),
-          BaseMessages.getString( PKG, "MemcachedOutputDialog.FailedToGetFields.DialogMessage" ), ke );
+      new ErrorDialog( shell, BaseMessages.getString( PKG, "RedisOutputDialog.FailedToGetFields.DialogTitle" ),
+          BaseMessages.getString( PKG, "RedisOutputDialog.FailedToGetFields.DialogMessage" ), ke );
     }
   }
 }
