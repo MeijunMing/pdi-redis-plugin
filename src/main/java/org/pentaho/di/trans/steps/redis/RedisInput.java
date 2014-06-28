@@ -49,7 +49,7 @@ public class RedisInput extends BaseStep implements StepInterface {
   protected RedisInputMeta meta;
   protected RedisInputData data;
 
-  //protected MemcachedClient memcachedClient = null;
+  protected Jedis jedisClient = null;
 
   public RedisInput( StepMeta stepMeta, StepDataInterface stepDataInterface, int copyNr, TransMeta transMeta,
       Trans trans ) {
@@ -60,10 +60,11 @@ public class RedisInput extends BaseStep implements StepInterface {
   public boolean init( StepMetaInterface smi, StepDataInterface sdi ) {
     if ( super.init( smi, sdi ) ) {
       try {
-        // Create client and connect to memcached server(s)
+        // Create client and connect to redis server
         Set<InetSocketAddress> servers = ( (RedisInputMeta) smi ).getServers();
         // new InetSocketAddress( "localhost", 11211 )
-        RedisClient = new RedisClient( servers.toArray( new InetSocketAddress[servers.size()] ) );
+        //dani says: TODO, redis allows 1 server, do checkbox to allow single or cluster connection
+        redisClient = new jedisClient( servers.toArray( new InetSocketAddress[servers.size()] ) );
 
         return true;
       } catch ( Exception e ) {

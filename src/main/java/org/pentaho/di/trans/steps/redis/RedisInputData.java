@@ -20,7 +20,7 @@
  *
  ******************************************************************************/
 
-package org.pentaho.di.trans.steps.memcached;
+package org.pentaho.di.trans.steps.redis;
 
 import org.pentaho.di.core.row.RowMetaInterface;
 import org.pentaho.di.trans.step.BaseStepData;
@@ -29,9 +29,10 @@ import org.pentaho.di.trans.step.StepDataInterface;
 
 /**
  * @author Matt Burgess
+ * @author (redis version) Dani Remeseiro
  *
  */
-public class MemcachedInputData extends BaseStepData implements StepDataInterface
+public class RedisInputData extends BaseStepData implements StepDataInterface
 {
 
   public RowMetaInterface outputRowMeta;
@@ -39,7 +40,7 @@ public class MemcachedInputData extends BaseStepData implements StepDataInterfac
 	/**
 	 * 
 	 */
-	public MemcachedInputData()
+	public RedisInputData()
 	{
 		super();
 	}

@@ -20,7 +20,7 @@
  *
  ******************************************************************************/
 
-package org.pentaho.di.trans.steps.memcached;
+package org.pentaho.di.trans.steps.redis;
 
 import java.net.InetSocketAddress;
 import java.util.HashSet;
@@ -56,20 +56,20 @@ import org.pentaho.metastore.api.IMetaStore;
 import org.w3c.dom.Node;
 
 /**
- * The Memcached Input step looks up value objects, from the given key names, from memached server(s).
+ * The Redis Input step looks up value objects, from the given key names, from memached server(s).
  * 
  */
-@Step( id = "MemcachedInput", image = "memcached-input.png", name = "Memcached Input",
-    description = "Reads from a memcached instance", categoryDescription = "Input" )
-public class MemcachedInputMeta extends BaseStepMeta implements StepMetaInterface {
-  private static Class<?> PKG = MemcachedInputMeta.class; // for i18n purposes, needed by Translator2!! $NON-NLS-1$
+@Step( id = "RedisInput", image = "redis-input.png", name = "Redis Input",
+    description = "Reads from a Redis instance", categoryDescription = "Input" )
+public class RedisInputMeta extends BaseStepMeta implements StepMetaInterface {
+  private static Class<?> PKG = RedisInputMeta.class; // for i18n purposes, needed by Translator2!! $NON-NLS-1$
 
   private String keyFieldName;
   private String valueFieldName;
   private String valueTypeName;
   private Set<InetSocketAddress> servers;
 
-  public MemcachedInputMeta() {
+  public RedisInputMeta() {
     super(); // allocate BaseStepMeta
   }
 
@@ -78,7 +78,7 @@ public class MemcachedInputMeta extends BaseStepMeta implements StepMetaInterfac
   }
 
   public Object clone() {
-    MemcachedInputMeta retval = (MemcachedInputMeta) super.clone();
+    RedisInputMeta retval = (RedisInputMeta) super.clone();
     retval.setKeyFieldName( this.keyFieldName );
     retval.setValueFieldName( this.valueFieldName );
     retval.setValueTypeName( this.valueTypeName );
@@ -105,7 +105,7 @@ public class MemcachedInputMeta extends BaseStepMeta implements StepMetaInterfac
         v = ValueMetaFactory.createValueMeta( this.valueFieldName, ValueMeta.getType( this.valueTypeName ) );
       } catch ( KettlePluginException e ) {
         throw new KettleStepException( BaseMessages.getString( PKG,
-            "MemcachedInputMeta.Exception.ValueTypeNameNotFound" ), e );
+            "RedisInputMeta.Exception.ValueTypeNameNotFound" ), e );
       }
       v.setOrigin( origin );
       int valueFieldIndex = inputRowMeta.indexOfValue( this.valueFieldName );
@@ -116,7 +116,7 @@ public class MemcachedInputMeta extends BaseStepMeta implements StepMetaInterfac
       }
     } else {
       throw new KettleStepException( BaseMessages
-          .getString( PKG, "MemcachedInputMeta.Exception.ValueFieldNameNotFound" ) );
+          .getString( PKG, "RedisInputMeta.Exception.ValueFieldNameNotFound" ) );
     }
   }
 
@@ -127,12 +127,12 @@ public class MemcachedInputMeta extends BaseStepMeta implements StepMetaInterfac
     if ( prev == null || prev.size() == 0 ) {
       cr =
           new CheckResult( CheckResultInterface.TYPE_RESULT_WARNING, BaseMessages.getString( PKG,
-              "MemcachedInputMeta.CheckResult.NotReceivingFields" ), stepMeta );
+              "RedisInputMeta.CheckResult.NotReceivingFields" ), stepMeta );
       remarks.add( cr );
     } else {
       cr =
           new CheckResult( CheckResultInterface.TYPE_RESULT_OK, BaseMessages.getString( PKG,
-              "MemcachedInputMeta.CheckResult.StepRecevingData", prev.size() + "" ), stepMeta );
+              "RedisInputMeta.CheckResult.StepRecevingData", prev.size() + "" ), stepMeta );
       remarks.add( cr );
     }
 
@@ -140,23 +140,23 @@ public class MemcachedInputMeta extends BaseStepMeta implements StepMetaInterfac
     if ( input.length > 0 ) {
       cr =
           new CheckResult( CheckResultInterface.TYPE_RESULT_OK, BaseMessages.getString( PKG,
-              "MemcachedInputMeta.CheckResult.StepRecevingData2" ), stepMeta );
+              "RedisInputMeta.CheckResult.StepRecevingData2" ), stepMeta );
       remarks.add( cr );
     } else {
       cr =
           new CheckResult( CheckResultInterface.TYPE_RESULT_ERROR, BaseMessages.getString( PKG,
-              "MemcachedInputMeta.CheckResult.NoInputReceivedFromOtherSteps" ), stepMeta );
+              "RedisInputMeta.CheckResult.NoInputReceivedFromOtherSteps" ), stepMeta );
       remarks.add( cr );
     }
   }
 
   public StepInterface getStep( StepMeta stepMeta, StepDataInterface stepDataInterface, int cnr, TransMeta tr,
       Trans trans ) {
-    return new MemcachedInput( stepMeta, stepDataInterface, cnr, tr, trans );
+    return new RedisInput( stepMeta, stepDataInterface, cnr, tr, trans );
   }
 
   public StepDataInterface getStepData() {
-    return new MemcachedInputData();
+    return new RedisInputData();
   }
 
   public String getKeyFieldName() {
@@ -222,7 +222,7 @@ public class MemcachedInputMeta extends BaseStepMeta implements StepMetaInterfac
         servers.add( new InetSocketAddress( hostname, port ) );
       }
     } catch ( Exception e ) {
-      throw new KettleXMLException( BaseMessages.getString( PKG, "MemcachedInputMeta.Exception.UnableToReadStepInfo" ),
+      throw new KettleXMLException( BaseMessages.getString( PKG, "RedisInputMeta.Exception.UnableToReadStepInfo" ),
           e );
     }
   }
@@ -245,7 +245,7 @@ public class MemcachedInputMeta extends BaseStepMeta implements StepMetaInterfac
 
     } catch ( Exception e ) {
       throw new KettleException( BaseMessages.getString( PKG,
-          "MemcachedInputMeta.Exception.UnexpectedErrorReadingStepInfo" ), e );
+          "RedisInputMeta.Exception.UnexpectedErrorReadingStepInfo" ), e );
     }
   }
 
@@ -265,7 +265,7 @@ public class MemcachedInputMeta extends BaseStepMeta implements StepMetaInterfac
       }
     } catch ( Exception e ) {
       throw new KettleException( BaseMessages.getString( PKG,
-          "MemcachedInputMeta.Exception.UnexpectedErrorSavingStepInfo" ), e );
+          "RedisInputMeta.Exception.UnexpectedErrorSavingStepInfo" ), e );
     }
   }
 
