@@ -1,7 +1,7 @@
 pdi-redis-plugin
 ====================
 
-<h3>WARNING: do not user this plugin yet, is not functional yet!</h3>
+<h3>WARNING: do not use this plugin, is not functional yet!</h3>
 
 
 Plugins for Pentaho Data Integration (PDI) allowing reading from and writing to redis server.
