@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'antlr'
 apply plugin: 'eclipse'
 
 // Keep Java source compatibility at 1.6 unless you absolutely need 7+ features, as this will 
@@ -10,13 +11,29 @@ sourceCompatibility = JavaVersion.VERSION_1_6
 // release tag
 project.ext.kettle_dependency_revision = 'TRUNK-SNAPSHOT'
 project.ext.metastore_dependency_revision = 'TRUNK-SNAPSHOT'
+buildscript {
+    repositories {
+        mavenLocal()
+        maven {
+            name 'JFrog OSS snapshot repo'
+            url  'https://oss.jfrog.org/oss-snapshot-local/'
+        }
+        mavenCentral()
+    }
 
-project.ext.spymemcached_dependency_revision = '2.10.5'
+    dependencies {
+        classpath group: 'net.carlosgsouza', name: 'gradle-console', version: '1.0'
+    }
+}
+
+apply plugin: 'console'
 
 // This adds the Pentaho repositories and Maven Central. The official list of repos is currently
 // kept in GitHub at pentaho/subfloor/master-copies/ivysettings.xml, but if we move to Maven
 // you will want to see the common POM.
 project.repositories {
+  mavenLocal()
+  mavenCentral()
   
   ivy {
     url "http://repo.pentaho.org/artifactory/repo/"
@@ -29,13 +46,12 @@ project.repositories {
   maven {
     url 'http://repo.pentaho.org/artifactory/repo'
   }
-  mavenLocal()
-  mavenCentral()
+  
 }
 
 configurations {
   runtimeWithoutCompile {
-    transitive = false
+    transitive = true
   }
   zip
 }
@@ -47,21 +63,18 @@ dependencies {
   compile("pentaho-kettle:kettle-engine:${project.ext.kettle_dependency_revision}")
   compile("pentaho-kettle:kettle-ui-swt:${project.ext.kettle_dependency_revision}")
   compile("pentaho:metastore:${project.ext.metastore_dependency_revision}")
-  compile("net.spy:spymemcached:${project.ext.spymemcached_dependency_revision}")
+  compile('redis.clients:jedis:2.5.1')
   
  
   // Put runtime dependencies here using the runtime() directive. Example:
-  //  runtime("com.tinkerpop.gremlin:gremlin-groovy:${project.ext.blueprints_dependency_revision}")
+  
   
   // Put runtime overrides of compile-time dependencies here. Often this will include the runtime() dependencies plus
   // any overrides of JARs in the normal Kettle classloader. Example:
-  //runtimeWithoutCompile("com.tinkerpop.blueprints:blueprints-core:${project.ext.blueprints_dependency_revision}")
-  //runtimeWithoutCompile('com.fasterxml.jackson.core:jackson-core:2.1.2')
-  runtimeWithoutCompile("net.spy:spymemcached:${project.ext.spymemcached_dependency_revision}")
-  
   compile fileTree(dir: 'lib-dist', include: '*.jar')
-  runtimeWithoutCompile fileTree(dir: 'lib-dist', include: '*.jar')
+  runtimeWithoutCompile('redis.clients:jedis:2.5.1')
   
+  testCompile 'junit:junit:4.10'
 }
 
 // This task builds a PDI plugin in the correct format, a ZIP with the plugin JAR at the root and a lib/ folder containing
@@ -88,5 +101,5 @@ artifacts {
 }
 
 task createGradleWrapper(type: Wrapper) {
-  gradleVersion = '1.7'
+  gradleVersion = '1.8'
 }
